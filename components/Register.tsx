@@ -1,23 +1,24 @@
 "use client";
+
 import React from "react";
 import { Button, Card, CardBody, CardHeader, Input } from "@nextui-org/react";
 import { Lock } from "lucide-react";
 import Link from "next/link";
-import { FieldError, useForm } from "react-hook-form";
-import clsx from "clsx";
-import { LoginSchema, loginSchema } from "@/utils/zodschema";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { RegisterSchema, registerSchema } from "@/utils/zodschema";
+import clsx from "clsx";
 
-export default function Login() {
+export default function Register() {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<LoginSchema>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<RegisterSchema>({
+    resolver: zodResolver(registerSchema),
     mode: "onTouched",
   });
-  const onSubmit = (data: LoginSchema) => {
+  const onSubmit = (data: RegisterSchema) => {
     console.log(data);
     console.log("baal");
   };
@@ -35,41 +36,55 @@ export default function Login() {
       >
         <CardHeader className="flex items-center justify-center gap-1">
           <Lock size={24} />
-          <span className="text-center text-xl">Login</span>
+          <span className="text-center text-xl">Register</span>
         </CardHeader>
 
         <CardBody className="w-full">
           <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+            <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+              <Input
+                {...register("firstName")}
+                type="firstName"
+                label="First Name"
+                isInvalid={errors.firstName as never as boolean}
+                errorMessage={errors.firstName?.message}
+              />
+              <Input
+                type="lastName"
+                label="Last Name"
+                {...register("lastName")}
+                isInvalid={errors.lastName as never as boolean}
+                errorMessage={errors.lastName?.message}
+              />
+            </div>
             <Input
+              {...register("email")}
               type="email"
               label="Email"
-              defaultValue=""
-              {...register("email")}
               isInvalid={errors.email as never as boolean}
               errorMessage={errors.email?.message}
             />
             <Input
               type="password"
-              defaultValue=""
               label="Password"
-              {...register("password")}
               isInvalid={errors.password as never as boolean}
               errorMessage={errors.password?.message}
+              {...register("password")}
             />
             <Button
-              type="submit"
               color="primary"
               variant="bordered"
               className={clsx("w-full", !isValid && "cursor-not-allowed")}
+              type="submit"
               disabled={!isValid}
             >
-              Login
+              Register
             </Button>
           </form>
           <div className="mt-2">
-            <span>Don't have an account? </span>
-            <Link href="/register" className="text-blue-500/90">
-              Register
+            <span>Already have an account? </span>
+            <Link href="/login" className="text-blue-500/90">
+              Login
             </Link>
           </div>
         </CardBody>
