@@ -7,9 +7,19 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterSchema, registerSchema } from "@/utils/zodschema";
-import clsx from "clsx";
+import { useFormState, useFormStatus } from "react-dom";
+import { registerUser } from "@/actions/auth";
+import SubmitBtn from "./SubmitBtn";
+
+const initial = {
+  messsage: null,
+  errors: null,
+  code: null,
+};
 
 export default function Register() {
+  const [formState, action] = useFormState(registerUser, initial);
+
   const {
     register,
     handleSubmit,
@@ -40,7 +50,11 @@ export default function Register() {
         </CardHeader>
 
         <CardBody className="w-full">
-          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+          <form
+            action={action}
+            className="space-y-4"
+            // onSubmit={handleSubmit(onSubmit)}
+          >
             <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
               <Input
                 {...register("firstName")}
@@ -71,15 +85,18 @@ export default function Register() {
               errorMessage={errors.password?.message}
               {...register("password")}
             />
-            <Button
-              color="primary"
-              variant="bordered"
-              className={clsx("w-full", !isValid && "cursor-not-allowed")}
-              type="submit"
-              disabled={!isValid}
-            >
+
+            {formState?.message && (
+              <div className=" text-red-400/65 p-2">
+                {formState?.code === "P2002"
+                  ? "user already exists"
+                  : formState.message}
+              </div>
+            )}
+
+            <SubmitBtn isValid={isValid} color="primary" variant="bordered">
               Register
-            </Button>
+            </SubmitBtn>
           </form>
           <div className="mt-2">
             <span>Already have an account? </span>

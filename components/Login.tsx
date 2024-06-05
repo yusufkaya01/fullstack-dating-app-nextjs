@@ -1,26 +1,31 @@
 "use client";
 import React from "react";
-import { Button, Card, CardBody, CardHeader, Input } from "@nextui-org/react";
+import { Card, CardBody, CardHeader, Input } from "@nextui-org/react";
 import { Lock } from "lucide-react";
 import Link from "next/link";
-import { FieldError, useForm } from "react-hook-form";
-import clsx from "clsx";
+import { useForm } from "react-hook-form";
 import { LoginSchema, loginSchema } from "@/utils/zodschema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import SubmitBtn from "./SubmitBtn";
+import { signinUser } from "@/actions/auth";
+import { useFormState } from "react-dom";
+
+const initial = {
+  messsage: null,
+  errors: null,
+  code: null,
+};
 
 export default function Login() {
+  const [formState, action] = useFormState(signinUser, initial);
+
   const {
     register,
-    handleSubmit,
     formState: { errors, isValid },
   } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     mode: "onTouched",
   });
-  const onSubmit = (data: LoginSchema) => {
-    console.log(data);
-    console.log("baal");
-  };
 
   return (
     <div
@@ -39,7 +44,7 @@ export default function Login() {
         </CardHeader>
 
         <CardBody className="w-full">
-          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-4" action={action}>
             <Input
               type="email"
               label="Email"
@@ -56,15 +61,14 @@ export default function Login() {
               isInvalid={errors.password as never as boolean}
               errorMessage={errors.password?.message}
             />
-            <Button
-              type="submit"
-              color="primary"
-              variant="bordered"
-              className={clsx("w-full", !isValid && "cursor-not-allowed")}
-              disabled={!isValid}
-            >
-              Login
-            </Button>
+
+            {formState.message && (
+              <div className="text-red-500/90">{formState.message}</div>
+            )}
+
+            <SubmitBtn isValid={isValid} color="primary" variant="bordered">
+              login
+            </SubmitBtn>
           </form>
           <div className="mt-2">
             <span>Don't have an account? </span>

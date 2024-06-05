@@ -22,7 +22,6 @@ export default function RootLayout({
         className={`${inter.className} dark text-foreground bg-background dark-blue-mesh glass `}
       >
         <Provider>
-          <Nav />
           <>{children}</>
         </Provider>
       </body>
