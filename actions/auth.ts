@@ -4,7 +4,6 @@ import { signin, signup } from "@/utils/authDb";
 import { redirect } from "next/navigation";
 import { COOKIE_NAME } from "@/utils/constants";
 import { loginSchema, registerSchema } from "@/utils/zodschema";
-import { getUser } from "@/utils/user";
 
 export const registerUser = async (prevState: any, formData: FormData) => {
   let data;
@@ -27,7 +26,7 @@ export const registerUser = async (prevState: any, formData: FormData) => {
     console.error("message", e.code);
     return { message: "Failed to sign you up", errors: e.errors, code: e.code };
   }
-  redirect("/");
+  redirect("/members");
 };
 
 export const signinUser = async (prevState: any, formData: FormData) => {
@@ -49,5 +48,10 @@ export const signinUser = async (prevState: any, formData: FormData) => {
     console.error(err.message);
     return { message: err.message, errors: err.errors };
   }
-  redirect("/");
+  redirect("/members");
+};
+
+export const signoutUser = () => {
+  cookies().delete(COOKIE_NAME);
+  redirect("/login");
 };

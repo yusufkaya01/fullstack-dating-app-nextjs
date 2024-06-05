@@ -45,9 +45,9 @@ export default function ClientNav({ user }) {
         <NavbarItem>
           <Link
             color="foreground"
-            href="/matches"
+            href="/members"
             className={clsx("", {
-              "text-blue-400/90": path === "/matches",
+              "text-blue-400/90": path === "/members",
             })}
           >
             Matches
@@ -76,54 +76,11 @@ export default function ClientNav({ user }) {
             Messages
           </Link>
         </NavbarItem>
-
-        <NavbarItem>
-          <NavDropDown />
-        </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
-        {user.id ? (
-          <>
-            <NavbarItem className="hidden lg:flex">
-              <Link
-                href="/profile"
-                color="foreground"
-                className={clsx("", {
-                  "text-blue-400/90": path === "/profile",
-                })}
-              >
-                logged in as {user.firstName}
-              </Link>
-            </NavbarItem>
-          </>
-        ) : (
-          <>
-            <NavbarItem className="hidden lg:flex">
-              <Link
-                href="/login"
-                color="foreground"
-                className={clsx("", {
-                  "text-blue-400/90": path === "/login",
-                })}
-              >
-                Login
-              </Link>
-            </NavbarItem>
-            <NavbarItem>
-              <Button
-                as={Link}
-                color="primary"
-                href="/register"
-                variant="flat"
-                className={clsx("text-[#fff]/90", {
-                  "text-blue-400/90": path === "/register",
-                })}
-              >
-                Sign Up
-              </Button>
-            </NavbarItem>
-          </>
-        )}
+        <NavbarItem>
+          <NavDropDown user={user} />
+        </NavbarItem>
       </NavbarContent>
       <NavbarMenu>
         {menuItems.map((item, index) => (
