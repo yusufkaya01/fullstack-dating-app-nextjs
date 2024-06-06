@@ -18,3 +18,13 @@ export const getMembers = async () => {
 
   return members;
 };
+
+export const getMember = async (id: string) => {
+  const member = await prisma.member.findUnique({
+    where: {
+      userId: id,
+    },
+  });
+
+  return member;
+};
