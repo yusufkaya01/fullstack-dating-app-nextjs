@@ -26,7 +26,7 @@ export default function NavbarDropDown({ user }: { user: User }) {
             isBordered
             as="button"
             className="transition-transform glass"
-            src={user.image}
+            src={user?.image}
           />
         </DropdownTrigger>
         <DropdownMenu aria-label="Profile Actions">
@@ -38,7 +38,7 @@ export default function NavbarDropDown({ user }: { user: User }) {
           "
           >
             <p className="font-semibold">Signed in as</p>
-            <p className="font-semibold">{`${user.firstName + " " + user.lastName}`}</p>
+            <p className="font-semibold">{`${user?.firstName + " " + user?.lastName}`}</p>
           </DropdownItem>
 
           <DropdownItem

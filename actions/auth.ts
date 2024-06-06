@@ -37,7 +37,7 @@ export const signinUser = async (prevState: any, formData: FormData) => {
       password: formData.get("password"),
     });
   } catch (err: any) {
-    console.error(err);
+    console.error(err.code);
     return { message: "Invalid data", errors: err.errors };
   }
 

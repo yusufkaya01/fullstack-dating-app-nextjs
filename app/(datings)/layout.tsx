@@ -6,7 +6,7 @@ const Homelayout = ({ children }: PropsWithChildren<{}>) => {
     <div>
       <Navbar />
 
-      {children}
+      <div className="w-full">{children}</div>
     </div>
   );
 };

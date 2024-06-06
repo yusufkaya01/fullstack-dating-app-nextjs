@@ -29,6 +29,55 @@ export const membersData = [
     country: "Grenada",
     image: "/images/f2.jpeg",
   },
+
+  {
+    email: "jolie@test.com",
+    username: "jolie",
+    gender: "female",
+    dateOfBirth: "1986-09-24",
+    firstName: "Angelina",
+    lastName: "Jolie",
+    created: "2020-06-24",
+    lastActive: "2020-06-21",
+    description:
+      "Sunt esse aliqua ullamco in incididunt consequat commodo. Nisi ad esse elit ipsum commodo fugiat est ad. Incididunt nostrud incididunt nostrud sit excepteur occaecat.\r\n",
+    city: "Los Angeles",
+    country: "United States",
+    image: "/images/f3.jpeg",
+  },
+
+  {
+    email: "selena@test.com",
+    username: "selena",
+    gender: "female",
+    dateOfBirth: "1987-09-24",
+    firstName: "Selena",
+    lastName: "Gomez",
+    created: "2020-06-24",
+    lastActive: "2020-06-21",
+    description:
+      "Sunt esse aliqua ullamco in incididunt consequat commodo. Nisi ad esse elit ipsum commodo fugiat est ad. Incididunt nostrud incididunt nostrud sit excepteur occaecat.\r\n",
+    city: "Miami",
+    country: "United States",
+    image: "/images/f4.jpeg",
+  },
+
+  {
+    email: "dua@test.com",
+    username: "dua",
+    gender: "female",
+    dateOfBirth: "1984-10-24",
+    firstName: "Dua",
+    lastName: "Lipa",
+    created: "2020-06-24",
+    lastActive: "2020-06-21",
+    description:
+      "Sunt esse aliqua ullamco in incididunt consequat commodo. Nisi ad esse elit ipsum commodo fugiat est ad. Incididunt nostrud incididunt nostrud sit excepteur occaecat.\r\n",
+    city: "Miami",
+    country: "United States",
+    image: "/images/f5.jpeg",
+  },
+
   {
     email: "todd@test.com",
     username: "todd",
@@ -58,5 +107,52 @@ export const membersData = [
     city: "Welda",
     country: "Christmas Island",
     image: "/images/m2.jpeg",
+  },
+
+  {
+    email: "brad@test.com",
+    username: "brad",
+    gender: "male",
+    dateOfBirth: "1984-04-09",
+    firstName: "Brad",
+    lastName: "Pitt",
+    created: "2020-04-05",
+    lastActive: "2020-06-23",
+    description:
+      "Qui adipisicing enim mollit magna fugiat. Quis laborum sit adipisicing Lorem veniam magna. Aliqua ex occaecat id duis aute excepteur quis eu eiusmod. Cillum consectetur dolore officia consequat veniam nulla qui occaecat ullamco ipsum sit incididunt aute ullamco.\r\n",
+    city: "Welda",
+    country: "Christmas Island",
+    image: "/images/m3.jpeg",
+  },
+
+  {
+    email: "justin@test.com",
+    username: "justin",
+    gender: "male",
+    dateOfBirth: "1980-04-09",
+    firstName: "Justin",
+    lastName: "Timberlake",
+    created: "2020-04-05",
+    lastActive: "2020-06-23",
+    description:
+      "Qui adipisicing enim mollit magna fugiat. Quis laborum sit adipisicing Lorem veniam magna. Aliqua ex occaecat id duis aute excepteur quis eu eiusmod. Cillum consectetur dolore officia consequat veniam nulla qui occaecat ullamco ipsum sit incididunt aute ullamco.\r\n",
+    city: "Miami",
+    country: "United States",
+    image: "/images/m4.jpeg",
+  },
+  {
+    email: "bale@test.com",
+    username: "bale",
+    gender: "male",
+    dateOfBirth: "1984-04-09",
+    firstName: "Christian",
+    lastName: "Bale",
+    created: "2020-04-05",
+    lastActive: "2020-06-23",
+    description:
+      "Qui adipisicing enim mollit magna fugiat. Quis laborum sit adipisicing Lorem veniam magna. Aliqua ex occaecat id duis aute excepteur quis eu eiusmod. Cillum consectetur dolore officia consequat veniam nulla qui occaecat ullamco ipsum sit incididunt aute ullamco.\r\n",
+    city: "Welda",
+    country: "Christmas Island",
+    image: "/images/m5.jpeg",
   },
 ];
