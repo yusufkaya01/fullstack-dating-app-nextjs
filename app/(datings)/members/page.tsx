@@ -1,9 +1,13 @@
 import MemberCard from "@/components/MemberCard";
 import { getMembers } from "@/utils/members";
+import { getUser } from "@/utils/user";
 
 const MembersPage = async () => {
-  const members = await getMembers();
-  console.log(members);
+  const user = await getUser();
+
+  if (!user) return null;
+
+  const members = await getMembers(user.id);
   return (
     <div
       className="mt-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4

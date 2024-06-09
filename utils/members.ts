@@ -1,30 +1,44 @@
 "use server";
-import { revalidatePath } from "next/cache";
 import prisma from "./db";
-import { getUser } from "./user";
+import { memoize } from "nextjs-better-unstable-cache";
 
-export const getMembers = async () => {
-  const user = await getUser();
-
-  const members = await prisma.member.findMany({
-    where: {
-      NOT: {
-        userId: user?.id,
+export const getMembers = memoize(
+  async (userId: string) => {
+    const members = await prisma.member.findMany({
+      where: {
+        NOT: {
+          userId: userId,
+        },
       },
-    },
-  });
+    });
 
-  revalidatePath("/members");
+    return members;
+  },
+  {
+    persist: true,
+    log: ["datacache", "verbose"],
+    suppressWarnings: true,
+    revalidateTags: () => ["members"],
+  },
+);
 
-  return members;
-};
+export const getMember = memoize(
+  async (id: string) => {
+    const member = await prisma.member.findUnique({
+      where: {
+        userId: id,
+      },
+      include: {
+        photos: true,
+      },
+    });
 
-export const getMember = async (id: string) => {
-  const member = await prisma.member.findUnique({
-    where: {
-      userId: id,
-    },
-  });
-
-  return member;
-};
+    return member;
+  },
+  {
+    persist: true,
+    log: ["datacache", "verbose"],
+    suppressWarnings: true,
+    revalidateTags: (id: string) => [`member:${id}`],
+  },
+);

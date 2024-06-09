@@ -1,3 +1,4 @@
+import Sidebar from "@/components/Sidebar";
 import { getMember } from "@/utils/members";
 import { notFound } from "next/navigation";
 
@@ -7,9 +8,11 @@ const page = async ({ params }: { params: { id: string } }) => {
   if (!member) return notFound();
 
   return (
-    <div>
-      user name : {member.firstName}+{member.lastName}
-    </div>
+    <>
+      <div className="glass light-blue-mesh h-full">
+        user name : {member.firstName}+{member.lastName}
+      </div>
+    </>
   );
 };
 
