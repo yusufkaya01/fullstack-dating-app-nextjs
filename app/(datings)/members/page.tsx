@@ -1,9 +1,12 @@
+import { getAllLikesByLoginMember } from "@/actions/likeActions";
 import MemberCard from "@/components/MemberCard";
+
 import { getMembers } from "@/utils/members";
 import { getUser } from "@/utils/user";
 
 const MembersPage = async () => {
   const user = await getUser();
+  const likes = await getAllLikesByLoginMember();
 
   if (!user) return null;
 
@@ -16,7 +19,7 @@ const MembersPage = async () => {
     >
       <>
         {members.map((member) => (
-          <MemberCard key={member.id} member={member} />
+          <MemberCard key={member.id} member={member} likes={likes} />
         ))}
       </>
     </div>

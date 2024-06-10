@@ -1,12 +1,15 @@
 import { Card, CardFooter, Image } from "@nextui-org/react";
 import { Member } from "@prisma/client";
 import Link from "next/link";
+import LikeButton from "./LikeButton";
 
 type MemberProps = {
   member: Member;
+  likes: string[];
 };
 
-const MemberCard = ({ member }: MemberProps) => {
+const MemberCard = ({ member, likes }: MemberProps) => {
+  const isLiked = likes.includes(member.userId);
   return (
     <Card
       as={Link}
@@ -33,6 +36,9 @@ const MemberCard = ({ member }: MemberProps) => {
         className="aspect-square object-cover
         "
       />
+      <div className="absolute top-3 right-3 z-50">
+        <LikeButton targetId={member.userId} isLiked={isLiked} />
+      </div>
       <CardFooter>
         <div
           className="

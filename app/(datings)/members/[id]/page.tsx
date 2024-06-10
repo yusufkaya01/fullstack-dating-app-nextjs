@@ -1,4 +1,3 @@
-import Sidebar from "@/components/Sidebar";
 import { getMember } from "@/utils/members";
 import { CardBody, CardHeader, Divider } from "@nextui-org/react";
 import { notFound } from "next/navigation";
