@@ -3,6 +3,7 @@ import { revalidateTag } from "next/cache";
 
 import prisma from "@/utils/db";
 import { getUser } from "@/utils/user";
+import { memoize } from "nextjs-better-unstable-cache";
 
 export const toggleLikeMember = async (
   targetUserId: string,
@@ -33,21 +34,25 @@ export const toggleLikeMember = async (
   revalidateTag("members");
 };
 
-export const getAllLikesByLoginMember = async () => {
-  const user = await getUser();
-  if (!user) {
-    throw new Error("User not found");
-  }
-  const likes = await prisma.like.findMany({
-    where: {
-      sourceUserId: user.id,
-    },
-    select: {
-      targetUserId: true,
-    },
-  });
-  return likes.map((like) => like.targetUserId);
-};
+export const getAllLikesByLoginMember = memoize(
+  async (userId: string) => {
+    const likes = await prisma.like.findMany({
+      where: {
+        sourceUserId: userId,
+      },
+      select: {
+        targetUserId: true,
+      },
+    });
+    return likes.map((like) => like.targetUserId);
+  },
+  {
+    persist: true,
+    revalidateTags: ["members"],
+    log: ["datacache", "verbose"],
+    suppressWarnings: true,
+  },
+);
 
 export const getLikedMembers = async (type = "sourceLikes") => {
   const user = await getUser();
@@ -91,7 +96,7 @@ async function fetchTargetLikes(userId: string) {
 
 async function fetchMutualLikes(userId: string) {
   // i like how many users:
-  const sourceLikesList = await getAllLikesByLoginMember();
+  const sourceLikesList = await getAllLikesByLoginMember(userId);
 
   // how many users like me:
   const mutualLikesList = await prisma.like.findMany({

@@ -1,4 +1,5 @@
 import { getMember } from "@/utils/members";
+import { getUser } from "@/utils/user";
 import { CardBody, CardHeader, Divider } from "@nextui-org/react";
 import { notFound } from "next/navigation";
 

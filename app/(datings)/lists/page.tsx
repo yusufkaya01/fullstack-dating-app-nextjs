@@ -6,7 +6,8 @@ import ListsTab from "@/components/ListsTab";
 import { getUser } from "@/utils/user";
 
 const page = async ({ searchParams }: { searchParams: { type: string } }) => {
-  const likeIds = await getAllLikesByLoginMember();
+  const user = await getUser();
+  const likeIds = await getAllLikesByLoginMember(user.id);
   const members = await getLikedMembers(searchParams.type);
   return (
     <div className="h-screen">

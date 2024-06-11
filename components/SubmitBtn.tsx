@@ -17,7 +17,7 @@ const SubmitBtn = ({
       {...props}
       className={clsx("w-full", !isValid && "cursor-not-allowed")}
       type="submit"
-      disabled={!isValid}
+      // disabled={!isValid}
       isLoading={pending}
     >
       {children}

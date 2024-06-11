@@ -1,25 +1,18 @@
 import Sidebar from "@/components/Sidebar";
 import { getMember } from "@/utils/members";
+import { getUser } from "@/utils/user";
 import { Card } from "@nextui-org/react";
 import { PropsWithChildren } from "react";
 
-const layout = async ({
-  children,
-  params,
-}: PropsWithChildren<{
-  params: { id: string };
-}>) => {
-  const member = await getMember(params.id);
-  const basePath = `/members/${params.id}`;
+const layout = async ({ children }: PropsWithChildren<{}>) => {
+  const user = await getUser();
+  const member = await getMember(user.id);
+  const basePath = `/members/edit`;
   const navLinks = [
-    { name: "Profile", href: `${basePath}` },
+    { name: "Edit Profile", href: `${basePath}` },
     {
-      name: "Photos",
+      name: "Update Photos",
       href: `${basePath}/photos`,
-    },
-    {
-      name: "Chat",
-      href: `${basePath}/chat`,
     },
   ];
   return (

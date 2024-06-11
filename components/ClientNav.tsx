@@ -22,7 +22,10 @@ export default function ClientNav({ user }) {
   const menuItems = ["Matches", "Lists", "Messages", "Login"];
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen} className="dark-blue-mesh glass">
+    <Navbar
+      onMenuOpenChange={setIsMenuOpen}
+      className="static dark-blue-mesh glass"
+    >
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}

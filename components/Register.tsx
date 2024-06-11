@@ -22,16 +22,11 @@ export default function Register() {
 
   const {
     register,
-    handleSubmit,
     formState: { errors, isValid },
   } = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
     mode: "onTouched",
   });
-  const onSubmit = (data: RegisterSchema) => {
-    console.log(data);
-    console.log("baal");
-  };
 
   return (
     <div

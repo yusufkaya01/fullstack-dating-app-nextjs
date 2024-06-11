@@ -42,6 +42,9 @@ model User {
   emailVerified DateTime? @map("email_verified")
   image         String?
   accounts      Account[]
+ 
+  
+
 
   member Member?
 

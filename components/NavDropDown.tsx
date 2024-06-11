@@ -43,7 +43,7 @@ export default function NavbarDropDown({ user }: { user: User }) {
 
           <DropdownItem
             as={Link}
-            href="/memebers/profile"
+            href="/members/edit"
             key="settings"
             textValue="
            Profile
