@@ -2,9 +2,11 @@ import ClientNav from "./ClientNav";
 import { Suspense } from "react";
 import Loading from "./Loading";
 import { getUser } from "@/utils/user";
+import { getMember } from "@/utils/members";
 
 const Navbar = async () => {
-  const user = await getUser();
+  const { id } = await getUser();
+  const user = await getMember(id);
   return (
     <div>
       <Suspense

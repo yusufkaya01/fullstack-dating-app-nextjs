@@ -14,7 +14,7 @@ export default function StarButton({ selected, loading }: Props) {
         <Star
           size={24}
           className={clsx("fill-white", {
-            "text-yellow-400": selected,
+            "text-yellow-400 fill-yellow-400": selected,
           })}
         />
       ) : (
