@@ -2,7 +2,7 @@
 import prisma from "@/utils/db";
 import { getUser } from "@/utils/user";
 import { editProfileSchema } from "@/utils/zodschema";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 let data;
 
@@ -36,9 +36,14 @@ export const EditProfile = async (prev: any, formData: FormData) => {
         description: data.description,
       },
     });
-    revalidateTag("members/edit");
+    revalidateTag(`member:${user.id}`);
 
     revalidateTag("members");
+
+    //with these revalidatePath calls, we can revalidate the cache of the page
+    revalidatePath("/members/edit");
+
+    return updatedMember;
   } catch (err: any) {
     console.error(err);
     return {

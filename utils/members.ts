@@ -42,3 +42,23 @@ export const getMember = memoize(
     revalidateTags: (id: string) => [`member:${id}`],
   },
 );
+
+export const getMemberPhotosByUserId = memoize(
+  async (userId: string) => {
+    const memeberPhotos = await prisma.member.findMany({
+      where: {
+        userId: userId,
+      },
+      select: {
+        photos: true,
+      },
+    });
+    return memeberPhotos[0].photos;
+  },
+  {
+    persist: true,
+    log: ["datacache", "verbose"],
+    suppressWarnings: true,
+    revalidateTags: (userId: string) => [`photos:${userId}`],
+  },
+);

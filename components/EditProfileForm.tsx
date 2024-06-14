@@ -9,7 +9,6 @@ import { EditProfile } from "@/actions/EditProfile";
 import { useForm } from "react-hook-form";
 import { EditSchema, editProfileSchema } from "@/utils/zodschema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 
 type Props = {
   member: Member;
@@ -43,11 +42,7 @@ const EditProfileForm = ({ member }: Props) => {
         </CardHeader>
 
         <CardBody className="w-full">
-          <form
-            className="space-y-4"
-            action={action}
-            // onSubmit={handleSubmit(onSubmit)}
-          >
+          <form className="space-y-4" action={action}>
             <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
               <Input
                 {...register("firstName")}
@@ -91,7 +86,7 @@ const EditProfileForm = ({ member }: Props) => {
               </div>
             )} */}
 
-            <SubmitBtn color="primary" variant="bordered">
+            <SubmitBtn color="primary" variant="bordered" isValid={isValid}>
               Edit Profile
             </SubmitBtn>
           </form>

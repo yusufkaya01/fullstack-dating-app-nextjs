@@ -32,6 +32,7 @@ model Account {
   @@unique([provider, providerAccountId])
   @@map("accounts")
 }
+
 // Auth Schema:
 model User {
   id            String    @id @default(cuid())
@@ -42,9 +43,6 @@ model User {
   emailVerified DateTime? @map("email_verified")
   image         String?
   accounts      Account[]
- 
-  
-
 
   member Member?
 
@@ -53,7 +51,6 @@ model User {
 
 // After Authentication 
 // User can be a member
-
 
 model Member {
   id          String   @id @default(cuid())
@@ -70,16 +67,16 @@ model Member {
   updatedAt   DateTime @updatedAt
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([userId])
+  photos      Photo[]
+  sourceLikes Like[]  @relation("sourceUser")
+  targetLikes Like[]  @relation("targetUser")
 
-  photos Photo[]
-  sourceLikes Like[] @relation("sourceUser")
-  targetLikes Like[] @relation("targetUser")
+  @@unique([userId])
 }
 
-model Photo{
-  id String @id @default(cuid())
-  url String
+model Photo {
+  id       String  @id @default(cuid())
+  url      String
   publicId String?
 
   memberId String
@@ -89,14 +86,13 @@ model Photo{
 
 // Many to Many relationship between members and Like
 
-model Like{
-  sourceUserId   String
-  targetUserId   String
+model Like {
+  sourceUserId String
+  targetUserId String
 
-  sourceUser Member @relation("sourceUser",fields: [sourceUserId], references: [userId], onDelete: Cascade)
+  sourceUser Member @relation("sourceUser", fields: [sourceUserId], references: [userId], onDelete: Cascade)
 
-  targetUser Member @relation("targetUser",fields: [targetUserId], references: [userId], onDelete: Cascade)
+  targetUser Member @relation("targetUser", fields: [targetUserId], references: [userId], onDelete: Cascade)
 
   @@id([sourceUserId, targetUserId])
-
 }

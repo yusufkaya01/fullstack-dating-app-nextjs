@@ -1,3 +1,4 @@
+import MemberImage from "@/components/MemberImage";
 import { getMember } from "@/utils/members";
 import { CardBody, CardHeader, Divider, Image } from "@nextui-org/react";
 import React from "react";
@@ -13,15 +14,7 @@ const photosPage = async ({ params }: { params: { id: string } }) => {
       <Divider />
       <CardBody className=" grid grid-cols-5 gap-3">
         {photos.map((photo) => {
-          return (
-            <Image
-              src={photo.url}
-              alt="photo"
-              key={photo.id}
-              width={200}
-              height={200}
-            />
-          );
+          return <MemberImage key={photo.id} photo={photo} />;
         })}
       </CardBody>
     </div>
