@@ -1,8 +1,15 @@
 "use client";
-import { Card, CardBody, CardHeader, Input, Textarea } from "@nextui-org/react";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Input,
+  Textarea,
+} from "@nextui-org/react";
 import React, { useState } from "react";
 import SubmitBtn from "./SubmitBtn";
-import { SendHorizonal, SquarePen } from "lucide-react";
+import { Plus, SendHorizonal, SquarePen } from "lucide-react";
 import { useForm } from "react-hook-form";
 import {
   EditSchema,
@@ -46,14 +53,22 @@ const MessageForm = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="w-full">
-          <Input
-            {...register("text")}
-            type="text"
-            className="w-full h-full"
-            //   defaultValue={member.city}
-            isInvalid={errors.text as never as boolean}
-            errorMessage={errors.text?.message}
-          />
+          <div className="flex items-center justify-center gap-2">
+            <label>
+              <Input type="file" className="hidden" />
+              <Button color="primary" variant="bordered" as="span">
+                <Plus size={24} />
+              </Button>
+            </label>
+            <Input
+              {...register("text")}
+              type="text"
+              className="w-full h-full"
+              //   defaultValue={member.city}
+              isInvalid={errors.text as never as boolean}
+              errorMessage={errors.text?.message}
+            />
+          </div>
         </div>
 
         {/* 
