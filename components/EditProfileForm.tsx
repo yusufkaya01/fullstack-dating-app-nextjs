@@ -25,10 +25,13 @@ const EditProfileForm = ({ member }: Props) => {
   const {
     register,
     formState: { errors, isValid },
+    reset,
+    handleSubmit,
   } = useForm<EditSchema>({
     resolver: zodResolver(editProfileSchema),
     mode: "onTouched",
   });
+
   return (
     <div className="flex items-center justify-center h-full">
       {" "}

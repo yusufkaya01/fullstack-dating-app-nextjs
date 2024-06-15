@@ -100,21 +100,20 @@ model Like {
   @@id([sourceUserId, targetUserId])
 }
 
-
-model Message{
-  id String @id @default(cuid())
+model Message {
+  id   String @id @default(cuid())
   text String @db.Text
 
   createdAt DateTime @default(now())
 
-  senderId String?
+  senderId   String?
   receiverId String?
 
   sender Member? @relation("sender", fields: [senderId], references: [userId], onDelete: SetNull)
 
-  recipient Member? @relation("recipient",fields: [receiverId], references: [userId], onDelete: SetNull)
+  recipient Member? @relation("recipient", fields: [receiverId], references: [userId], onDelete: SetNull)
 
-  dateSeen DateTime?
-  senderDeleted Boolean @default(false)
-  recipientDeleted Boolean @default(false)
+  dateSeen         DateTime?
+  senderDeleted    Boolean   @default(false)
+  recipientDeleted Boolean   @default(false)
 }

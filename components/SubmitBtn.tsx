@@ -7,18 +7,25 @@ import { useFormStatus } from "react-dom";
 const SubmitBtn = ({
   children,
   isValid,
+  msg,
+  isLoading,
   ...props
 }: PropsWithChildren<{
   isValid: boolean;
+  isLoading: boolean;
+  msg: boolean;
 }>) => {
   const { pending } = useFormStatus();
   return (
     <Button
       {...props}
-      className={clsx("w-full", !isValid && "cursor-not-allowed")}
+      className={clsx("w-full", {
+        "cursor-not-allowed": !isValid,
+        "w-3/2": msg,
+      })}
       type="submit"
       disabled={!isValid}
-      isLoading={pending}
+      isLoading={pending || isLoading}
     >
       {children}
     </Button>
