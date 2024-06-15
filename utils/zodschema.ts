@@ -35,6 +35,13 @@ export const editProfileSchema = z.object({
   }),
 });
 
+export const messageSchema = z.object({
+  text: z.string().min(1, {
+    message: "Message must have at least 1 character",
+  }),
+});
+
 export type LoginSchema = z.infer<typeof loginSchema>;
 export type RegisterSchema = z.infer<typeof registerSchema>;
 export type EditSchema = z.infer<typeof editProfileSchema>;
+export type MessageSchema = z.infer<typeof messageSchema>;
