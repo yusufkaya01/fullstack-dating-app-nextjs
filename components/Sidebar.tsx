@@ -1,4 +1,5 @@
 "use client";
+import { transformImageUrl } from "@/utils/transformImageUrl";
 import { Card, CardBody, Divider, Image } from "@nextui-org/react";
 import { Member } from "@prisma/client";
 import clsx from "clsx";
@@ -28,7 +29,7 @@ const Sidebar = ({ member, navLinks }: SidebarProps) => {
   return (
     <Card className="w-full mt-10 items-center h-[80vh]  ash-mesh border-t-1 border-b-1">
       <Image
-        src={member?.image as string}
+        src={transformImageUrl(member?.image)}
         alt={member?.firstName}
         height={200}
         width={200}

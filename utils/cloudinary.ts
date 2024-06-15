@@ -1,3 +1,4 @@
+import { image } from "@nextui-org/react";
 import cloudinary from "cloudinary";
 
 cloudinary.v2.config({

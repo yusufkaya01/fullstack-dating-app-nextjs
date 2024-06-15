@@ -19,6 +19,7 @@ const MemberImage = ({ photo }: Props) => {
           gravity="faces"
           className="rounded-2xl"
           alt="Image of member"
+          priority
         />
       ) : (
         <Image src={photo?.url} alt="edit photo" height={220} width={220} />

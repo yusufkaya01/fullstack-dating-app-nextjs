@@ -10,6 +10,9 @@ export const getMembers = memoize(
           userId: userId,
         },
       },
+      orderBy: {
+        updatedAt: "desc",
+      },
     });
 
     return members;
