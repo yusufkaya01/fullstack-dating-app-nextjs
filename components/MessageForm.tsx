@@ -1,24 +1,13 @@
 "use client";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Input,
-  Textarea,
-} from "@nextui-org/react";
+import { Button, Input } from "@nextui-org/react";
 import React, { useState } from "react";
 import SubmitBtn from "./SubmitBtn";
 import { Plus, SendHorizonal, SquarePen } from "lucide-react";
 import { useForm } from "react-hook-form";
-import {
-  EditSchema,
-  MessageSchema,
-  editProfileSchema,
-  messageSchema,
-} from "@/utils/zodschema";
+
+import { MessageSchema, messageSchema } from "@/utils/zodschema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { createMessage } from "@/actions/messageAction";
 
 const MessageForm = () => {
@@ -37,6 +26,7 @@ const MessageForm = () => {
 
   const onSubmit = async (data: MessageSchema) => {
     setLoading(true);
+
     const formData = new FormData();
     formData.append("text", data.text);
 
@@ -64,25 +54,12 @@ const MessageForm = () => {
               {...register("text")}
               type="text"
               className="w-full h-full"
-              //   defaultValue={member.city}
               isInvalid={errors.text as never as boolean}
               errorMessage={errors.text?.message}
             />
           </div>
         </div>
 
-        {/* 
-{formState?.message && (
-  <div className=" text-red-400/65 p-2">
-    {formState?.code === "P2002"
-      ? "user already exists"
-      : formState.message}
-  </div>
-)} */}
-
-        {/* <SubmitBtn color="primary" variant="bordered" isValid={isValid}>
-          Edit Profile
-        </SubmitBtn> */}
         <SubmitBtn
           msg={true}
           color="primary"

@@ -2,6 +2,7 @@
 import prisma from "@/utils/db";
 import { getUser } from "@/utils/user";
 import { messageSchema } from "@/utils/zodschema";
+import { revalidatePath } from "next/cache";
 
 let data;
 
@@ -31,11 +32,61 @@ export const createMessage = async (
         text: data.text,
       },
     });
+    revalidatePath(`/members/${recipientId}/chat`);
   } catch (err: any) {
     console.error(err);
     return {
       message: err.message,
       errors: err.errors,
     };
+  }
+};
+
+export const getMessageThread = async (recipientId: string) => {
+  const user = await getUser();
+  if (!user) return;
+  try {
+    return await prisma.message.findMany({
+      where: {
+        OR: [
+          {
+            senderId: user.id,
+            receiverId: recipientId,
+          },
+          {
+            senderId: recipientId,
+            receiverId: user.id,
+          },
+        ],
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+      select: {
+        id: true,
+        text: true,
+        createdAt: true,
+        dateSeen: true,
+
+        sender: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            image: true,
+          },
+        },
+        recipient: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            image: true,
+          },
+        },
+      },
+    });
+  } catch (err) {
+    console.log(err);
   }
 };

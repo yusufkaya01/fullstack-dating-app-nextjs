@@ -85,6 +85,10 @@ model Photo {
   memberId String
 
   member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  photoMessages Message[]
 }
 
 // Many to Many relationship between members and Like
@@ -116,4 +120,14 @@ model Message {
   dateSeen         DateTime?
   senderDeleted    Boolean   @default(false)
   recipientDeleted Boolean   @default(false)
+
+  photoId String?
+
+  photo Photo? @relation(fields: [photoId], references: [id], onDelete: Cascade)
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([photoId])
+
 }
+
