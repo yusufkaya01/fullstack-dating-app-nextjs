@@ -33,3 +33,11 @@
   background-color: #0b1121;
   background-image: linear-gradient(135deg, #0b1121 0%, #14203a 100%);
 }
+
+.overflow-auto {
+  overflow-y: auto;
+}
+
+.flex-1 {
+  flex: 1;
+}

@@ -1,7 +1,9 @@
+"use client";
 import { transformImageUrl } from "@/utils/transformImageUrl";
 import { Avatar } from "@nextui-org/react";
 import { Message } from "@prisma/client";
 import clsx from "clsx";
+import { useEffect, useRef } from "react";
 
 type Props = {
   message: Message;
@@ -18,7 +20,11 @@ const MessageBox = ({
 }: Props) => {
   const isCurrentUser = message.senderId === currentUserId;
 
-  console.log("sender", currentUserId);
+  const messageEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messageEndRef]);
 
   return (
     <div className="grid grid-rows-1">
@@ -36,6 +42,8 @@ const MessageBox = ({
           <Avatar src={transformImageUrl(senderImg)} className="self-end" />
         )}
       </div>
+
+      <div ref={messageEndRef} />
     </div>
   );
 };

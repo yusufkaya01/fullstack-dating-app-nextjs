@@ -23,25 +23,26 @@ const page = async ({ params }: { params: { id: string } }) => {
 
   return (
     <>
-      <div className="glass light-blue-mesh h-full">
-        <CardHeader className="text-3xl font-bold ">Chat</CardHeader>
+      <div className="glass light-blue-mesh h-[100vh] flex flex-col">
+        <CardHeader className="text-3xl font-bold">Chat</CardHeader>
         <Divider />
-        {chats.length === 0
-          ? "No messages to display"
-          : chats.map((chat) => (
-              <div key={chat.id}>
+        <CardBody className="flex-1 overflow-y-scroll">
+          {chats.length === 0
+            ? "No messages to display"
+            : chats.map((chat) => (
                 <MessageBox
+                  key={chat.id}
                   message={chat}
                   currentUserId={user.id}
                   senderImg={senderImage}
                   receiverImg={receiverImage}
                 />
-              </div>
-            ))}
+              ))}
+        </CardBody>
+        <CardFooter className="glass ash-mesh px-8 py-4">
+          <MessageForm />
+        </CardFooter>
       </div>
-      <CardFooter className="glass ash-mesh px-8 py-4">
-        <MessageForm />
-      </CardFooter>
     </>
   );
 };

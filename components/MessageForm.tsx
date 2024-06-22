@@ -37,7 +37,7 @@ const MessageForm = () => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full ">
       <form
         className=" flex gap-2 items-center justify-center "
         onSubmit={handleSubmit(onSubmit)}
