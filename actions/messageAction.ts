@@ -67,6 +67,7 @@ export const getMessageThread = async (recipientId: string) => {
         text: true,
         createdAt: true,
         dateSeen: true,
+        senderId: true,
 
         sender: {
           select: {

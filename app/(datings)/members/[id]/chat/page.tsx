@@ -1,5 +1,7 @@
 import { getMessageThread } from "@/actions/messageAction";
+import MessageBox from "@/components/MessageBox";
 import MessageForm from "@/components/MessageForm";
+import { getUser } from "@/utils/user";
 import {
   Card,
   CardBody,
@@ -10,7 +12,15 @@ import {
 
 const page = async ({ params }: { params: { id: string } }) => {
   const chats = await getMessageThread(params.id);
+  const user = await getUser();
+
+  console.log(chats);
   if (!chats) return;
+
+  const senderImage = user?.image;
+  const receiverImage = chats.find((chat) => chat.senderId !== user.id)?.sender
+    .image;
+
   return (
     <>
       <div className="glass light-blue-mesh h-full">
@@ -20,9 +30,12 @@ const page = async ({ params }: { params: { id: string } }) => {
           ? "No messages to display"
           : chats.map((chat) => (
               <div key={chat.id}>
-                <CardBody>
-                  <p className="mt-1">{chat.text}</p>
-                </CardBody>
+                <MessageBox
+                  message={chat}
+                  currentUserId={user.id}
+                  senderImg={senderImage}
+                  receiverImg={receiverImage}
+                />
               </div>
             ))}
       </div>
