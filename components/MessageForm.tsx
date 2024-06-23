@@ -1,14 +1,16 @@
 "use client";
 import { Button, Input } from "@nextui-org/react";
-import React, { useState } from "react";
+import React, { use, useEffect, useMemo, useState } from "react";
 import SubmitBtn from "./SubmitBtn";
-import { Plus, SendHorizonal, SquarePen } from "lucide-react";
+import { Plus, SendHorizonal } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import { MessageSchema, messageSchema } from "@/utils/zodschema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { createMessage } from "@/actions/messageAction";
+import { ToxicityClassifier } from "@tensorflow-models/toxicity";
+import { loadToxicityModel } from "@/utils/loadToxicityMode";
 
 const MessageForm = () => {
   const params = useParams<{ id: string }>();
@@ -19,10 +21,15 @@ const MessageForm = () => {
     formState: { errors, isValid },
     handleSubmit,
     reset,
+    setFocus,
   } = useForm<MessageSchema>({
     resolver: zodResolver(messageSchema),
     mode: "onTouched",
   });
+
+  useEffect(() => {
+    setFocus("text");
+  }, [setFocus]);
 
   const onSubmit = async (data: MessageSchema) => {
     setLoading(true);
@@ -37,9 +44,9 @@ const MessageForm = () => {
   };
 
   return (
-    <div className="w-full ">
+    <div className="w-full">
       <form
-        className=" flex gap-2 items-center justify-center "
+        className="flex gap-2 items-center justify-center"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="w-full">

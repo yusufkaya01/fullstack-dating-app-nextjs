@@ -1,6 +1,7 @@
 import { getMessageThread } from "@/actions/messageAction";
 import MessageBox from "@/components/MessageBox";
 import MessageForm from "@/components/MessageForm";
+import { loadToxicityModel } from "@/utils/loadToxicityMode";
 import { getUser } from "@/utils/user";
 import {
   Card,

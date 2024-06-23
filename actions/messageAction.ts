@@ -91,3 +91,48 @@ export const getMessageThread = async (recipientId: string) => {
     console.log(err);
   }
 };
+
+export async function getMessagesByContainer(container: string) {
+  try {
+    const user = await getUser();
+    if (!user) return;
+
+    const selector = container === "inbox" ? "receiverId" : "senderId";
+
+    const messages = await prisma.message.findMany({
+      where: {
+        [selector]: user.id,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        text: true,
+        createdAt: true,
+        dateSeen: true,
+        senderId: true,
+
+        sender: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            image: true,
+          },
+        },
+        recipient: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            image: true,
+          },
+        },
+      },
+    });
+    return messages;
+  } catch (err) {
+    console.error(err);
+  }
+}
