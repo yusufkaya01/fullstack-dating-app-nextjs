@@ -1,11 +1,13 @@
+"use client";
+import ToxicityProvider from "@/context/ToxicityContext";
 import { NextUIProvider } from "@nextui-org/react";
 import { PropsWithChildren } from "react";
 
 const Provider = ({ children }: PropsWithChildren<{}>) => {
   return (
-    <div>
+    <ToxicityProvider>
       <NextUIProvider>{children}</NextUIProvider>
-    </div>
+    </ToxicityProvider>
   );
 };
 

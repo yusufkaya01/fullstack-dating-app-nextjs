@@ -46,7 +46,7 @@ export const getMessageThread = async (recipientId: string) => {
   const user = await getUser();
   if (!user) return;
   try {
-    return await prisma.message.findMany({
+    const messages = await prisma.message.findMany({
       where: {
         OR: [
           {
@@ -68,6 +68,8 @@ export const getMessageThread = async (recipientId: string) => {
         createdAt: true,
         dateSeen: true,
         senderId: true,
+        receiverId: true,
+        photo: true,
 
         sender: {
           select: {
@@ -87,6 +89,35 @@ export const getMessageThread = async (recipientId: string) => {
         },
       },
     });
+    const mapMessages = messages.map((message) => {
+      return {
+        id: message.id,
+        text: message.text,
+        createdAt: new Date(message.createdAt).toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+        }),
+        photo: message.photo,
+        dateSeen: message.dateSeen,
+        senderId: message.senderId,
+        sender: {
+          id: message.sender.id,
+          firstName: message.sender.firstName,
+          lastName: message.sender.lastName,
+          image: message.sender.image,
+        },
+        recipient: {
+          id: message.recipient.id,
+          firstName: message.recipient.firstName,
+          lastName: message.recipient.lastName,
+          image: message.recipient.image,
+        },
+      };
+    });
+    return mapMessages;
   } catch (err) {
     console.log(err);
   }
@@ -112,6 +143,7 @@ export async function getMessagesByContainer(container: string) {
         createdAt: true,
         dateSeen: true,
         senderId: true,
+        receiverId: true,
 
         sender: {
           select: {
@@ -131,7 +163,34 @@ export async function getMessagesByContainer(container: string) {
         },
       },
     });
-    return messages;
+    return messages.map((message) => {
+      return {
+        id: message.id,
+        text: message.text,
+        createdAt: new Date(message.createdAt).toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+        }),
+        dateSeen: message.dateSeen,
+        senderId: message.senderId,
+        recipientId: message.receiverId,
+        sender: {
+          id: message.sender.id,
+          firstName: message.sender.firstName,
+          lastName: message.sender.lastName,
+          image: message.sender.image,
+        },
+        recipient: {
+          id: message.recipient.id,
+          firstName: message.recipient.firstName,
+          lastName: message.recipient.lastName,
+          image: message.recipient.image,
+        },
+      };
+    });
   } catch (err) {
     console.error(err);
   }

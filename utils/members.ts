@@ -56,6 +56,7 @@ export const getMemberPhotosByUserId = memoize(
         photos: true,
       },
     });
+    if (!memeberPhotos[0] || !memeberPhotos[0].photos) return [];
     return memeberPhotos[0].photos;
   },
   {

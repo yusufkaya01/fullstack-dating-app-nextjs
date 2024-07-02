@@ -1,6 +1,7 @@
 "use client";
 
-import { UploadCloudIcon } from "lucide-react";
+import { Button } from "@nextui-org/react";
+import { Plus, UploadCloudIcon } from "lucide-react";
 import {
   CldUploadButton,
   CloudinaryUploadWidgetResults,
@@ -8,19 +9,20 @@ import {
 
 type Props = {
   onUploadImage: (result: CloudinaryUploadWidgetResults) => void;
+  isMessage: boolean;
 };
 
-const ImageUploadButton = ({ onUploadImage }: Props) => {
+const ImageUploadButton = ({ onUploadImage, isMessage }: Props) => {
   return (
     <CldUploadButton
       options={{ maxFiles: 1 }}
       onSuccess={onUploadImage}
       signatureEndpoint="/api/sign-image"
       uploadPreset="dating-app-demo"
-      className="flex items-center gap-2 bg-secondary text-white rounded-lg py-2 px-4 hover:bg-secondary/70 "
+      className="flex items-center gap-2 glass light-blue-mesh text-white rounded-lg py-2 px-4 hover:bg-secondary/70 "
     >
       <UploadCloudIcon size={28} />
-      Upload Image
+      {isMessage ? "" : "Upload Image"}
     </CldUploadButton>
   );
 };

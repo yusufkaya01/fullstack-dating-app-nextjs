@@ -1,5 +1,6 @@
 import { getMessagesByContainer } from "@/actions/messageAction";
 import MessageSidebar from "@/components/MessageSidebar";
+import MessageTable from "@/components/MessageTable";
 import React from "react";
 
 const MessagesPage = async ({
@@ -15,7 +16,9 @@ const MessagesPage = async ({
         <div className="col-span-2">
           <MessageSidebar />
         </div>
-        <div className="col-span-10">message goes here.</div>
+        <div className="col-span-10">
+          <MessageTable messages={messages} />
+        </div>
       </div>
     </div>
   );

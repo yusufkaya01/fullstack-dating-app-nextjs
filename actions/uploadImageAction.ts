@@ -1,6 +1,7 @@
 "use server";
 import cloudinary from "@/utils/cloudinary";
 import prisma from "@/utils/db";
+import { getMember } from "@/utils/members";
 import { getUser } from "@/utils/user";
 import { Photo } from "@prisma/client";
 import { revalidatePath, revalidateTag } from "next/cache";
@@ -89,5 +90,40 @@ export const deleteImage = async (photo: Photo) => {
     revalidatePath("/members/edit/photos");
   } catch (err) {
     console.error(err);
+  }
+};
+
+export const addMessageImage = async (
+  url: string,
+  publicId: string,
+  receiverId: string,
+) => {
+  try {
+    const user = await getUser();
+    if (!user) return;
+
+    await prisma.message.create({
+      data: {
+        text: "",
+        sender: {
+          connect: { userId: user.id },
+        },
+        recipient: {
+          connect: { userId: receiverId },
+        },
+        photo: {
+          create: {
+            url,
+            publicId,
+            member: {
+              connect: { userId: user.id },
+            },
+          },
+        },
+      },
+    });
+    revalidatePath(`/members/${receiverId}/chat`);
+  } catch (err) {
+    console.log(err);
   }
 };
