@@ -21,14 +21,19 @@ import {
 import ImageUploadButton from "./ImageUploadButton";
 import { CloudinaryUploadWidgetResults } from "next-cloudinary";
 import { addMessageImage } from "@/actions/uploadImageAction";
+import { useNude } from "@/context/NudeContext";
 
 const MessageForm = () => {
   const params = useParams<{ id: string }>();
   const [loading, setLoading] = useState(false);
   const { handleToxicity, isToxic } = useToxicity();
   const [imageUrl, setImageUrl] = useState<string | null>(null); // State to store the uploaded image URL
+  const { handleNude, isFine } = useNude();
+
+  const [sendImage, setSendImage] = useState(false);
 
   console.log(isToxic);
+  console.log(isFine);
 
   const {
     register,
@@ -48,11 +53,18 @@ const MessageForm = () => {
   const handleImageUpload = async (result: CloudinaryUploadWidgetResults) => {
     if (result.info && typeof result.info === "object") {
       setImageUrl(result.info.secure_url);
-      await addMessageImage(
-        result.info.secure_url,
-        result.info.public_id,
-        params.id,
-      );
+      const isFine = await handleNude(result.info.secure_url);
+      setSendImage(true);
+
+      if (isFine) {
+        await addMessageImage(
+          result.info.secure_url,
+          result.info.public_id,
+          params.id,
+        );
+      } else {
+        console.log("Image is not fine and will not be sent");
+      }
     }
   };
 
@@ -62,18 +74,22 @@ const MessageForm = () => {
     const formData = new FormData();
     formData.append("text", data.text);
 
-    const isMessageToxic = await handleToxicity(data.text);
-    console.log(isMessageToxic);
+    // const isMessageToxic = await handleToxicity(data.text);
+    // console.log(isMessageToxic);
 
-    if (!isMessageToxic) {
-      const res = await createMessage(formData, params.id);
-      console.log(res);
-      reset();
-    } else {
-      console.log("Message is toxic and will not be sent");
-    }
+    await createMessage(formData, params.id);
+
+    // if (!isMessageToxic) {
+    //   const res = await createMessage(formData, params.id);
+    //   console.log(res);
+    //   reset();
+    // } else {
+    //   console.log("Message is toxic and will not be sent");
+    // }
 
     setLoading(false);
+
+    reset();
   };
 
   return (
@@ -94,6 +110,26 @@ const MessageForm = () => {
     "
         >
           Message is toxic and will not be sent
+        </div>
+      )}
+
+      {!isFine && sendImage && (
+        <div
+          className="
+          bg-red-500
+          text-white
+          rounded-md
+          p-2
+          absolute
+          top-[20%]
+          left-0
+          w-full
+          text-center
+          z-50
+
+          "
+        >
+          Image is not fine and will not be sent
         </div>
       )}
 

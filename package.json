@@ -16,6 +16,7 @@
     "@hookform/resolvers": "^3.4.2",
     "@nextui-org/react": "^2.4.1",
     "@prisma/client": "^5.14.0",
+    "@teachablemachine/image": "^0.8.5",
     "@tensorflow-models/toxicity": "^1.2.2",
     "@tensorflow/tfjs": "^4.20.0",
     "@types/negotiator": "^0.6.3",

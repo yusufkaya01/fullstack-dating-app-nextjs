@@ -34,6 +34,12 @@ export const EditProfile = async (prev: any, formData: FormData) => {
         lastName: data.lastName,
         city: data.city,
         description: data.description,
+        user: {
+          update: {
+            firstName: data.firstName,
+            lastName: data.lastName,
+          },
+        },
       },
     });
     revalidateTag(`member:${user.id}`);
