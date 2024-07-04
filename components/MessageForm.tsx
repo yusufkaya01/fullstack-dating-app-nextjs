@@ -74,18 +74,7 @@ const MessageForm = () => {
     const formData = new FormData();
     formData.append("text", data.text);
 
-    // const isMessageToxic = await handleToxicity(data.text);
-    // console.log(isMessageToxic);
-
     await createMessage(formData, params.id);
-
-    // if (!isMessageToxic) {
-    //   const res = await createMessage(formData, params.id);
-    //   console.log(res);
-    //   reset();
-    // } else {
-    //   console.log("Message is toxic and will not be sent");
-    // }
 
     setLoading(false);
 
