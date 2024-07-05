@@ -40,7 +40,7 @@ const MessageBox = ({
       })}
     >
       {message.dateSeen && message.receiverId !== currentUserId ? (
-        <span className="text-xs text-black text-italic">
+        <span className="text-xs text-gray-100/70 text-italic">
           (Read {new Date(message.dateSeen).toLocaleString()})
         </span>
       ) : (
