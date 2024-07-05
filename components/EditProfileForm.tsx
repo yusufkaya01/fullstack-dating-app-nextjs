@@ -25,8 +25,6 @@ const EditProfileForm = ({ member }: Props) => {
   const {
     register,
     formState: { errors, isValid },
-    reset,
-    handleSubmit,
   } = useForm<EditSchema>({
     resolver: zodResolver(editProfileSchema),
     mode: "onTouched",
@@ -49,7 +47,7 @@ const EditProfileForm = ({ member }: Props) => {
             <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
               <Input
                 {...register("firstName")}
-                type="firstName"
+                type="text"
                 label="First Name"
                 defaultValue={member.firstName}
                 isInvalid={errors.firstName as never as boolean}
@@ -57,7 +55,7 @@ const EditProfileForm = ({ member }: Props) => {
               />
               <Input
                 {...register("lastName")}
-                type="lastName"
+                type="text"
                 label="Last Name"
                 defaultValue={member.lastName}
                 isInvalid={errors.lastName as never as boolean}
@@ -79,6 +77,15 @@ const EditProfileForm = ({ member }: Props) => {
               defaultValue={member.description}
               isInvalid={errors.description as never as boolean}
               errorMessage={errors.description?.message}
+            />
+            <Input
+              {...register("dateOfBirth")}
+              type="text"
+              label="Date of Birth"
+              placeholder="yyyy-mm-dd"
+              defaultValue={member?.dateOfBirth}
+              isInvalid={errors.dateOfBirth as never as boolean}
+              errorMessage={errors.dateOfBirth?.message}
             />
             {/* 
             {formState?.message && (

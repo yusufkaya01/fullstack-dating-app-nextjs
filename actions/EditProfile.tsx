@@ -13,6 +13,7 @@ export const EditProfile = async (prev: any, formData: FormData) => {
       lastName: formData.get("lastName"),
       city: formData.get("city"),
       description: formData.get("description"),
+      dateOfBirth: formData.get("dateOfBirth"),
     });
   } catch (err: any) {
     console.error("zod error", err);
@@ -34,6 +35,7 @@ export const EditProfile = async (prev: any, formData: FormData) => {
         lastName: data.lastName,
         city: data.city,
         description: data.description,
+        dateOfBirth: new Date(data.dateOfBirth),
         user: {
           update: {
             firstName: data.firstName,

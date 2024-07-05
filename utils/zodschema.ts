@@ -33,6 +33,9 @@ export const editProfileSchema = z.object({
   description: z.string().min(2, {
     message: "Description must have at least 2 characters",
   }),
+  dateOfBirth: z.string().min(2, {
+    message: "Date of Birth must have at least 2 characters",
+  }),
 });
 
 export const messageSchema = z.object({

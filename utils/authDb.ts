@@ -76,6 +76,14 @@ export const signup = async ({
 
   const token = createTokenForUser(user.id);
 
+  await prisma.member.create({
+    data: {
+      userId: user.id,
+      firstName,
+      lastName,
+    },
+  });
+
   return { user, token };
 };
 

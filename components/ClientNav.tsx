@@ -71,7 +71,7 @@ export default function ClientNav({ user }) {
         <NavbarItem>
           <Link
             color="foreground"
-            href="/messages"
+            href="/messages?container=inbox"
             className={clsx("", {
               "text-blue-400/90": path === "/messages",
             })}

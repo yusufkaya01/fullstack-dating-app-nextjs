@@ -13,7 +13,7 @@ type SidebarProps = {
 
 const Sidebar = ({ member, navLinks }: SidebarProps) => {
   const pathName = usePathname();
-  const basePath = `/members/${member.userId}`;
+  // const basePath = `/members/${member?.userId}`;
   // const navLinks = [
   //   { name: "Profile", href: `${basePath}` },
   //   {

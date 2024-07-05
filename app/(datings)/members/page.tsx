@@ -6,7 +6,7 @@ import { getUser } from "@/utils/user";
 
 const MembersPage = async () => {
   const user = await getUser();
-  const likes = await getAllLikesByLoginMember();
+  const likes = await getAllLikesByLoginMember(user.id);
 
   if (!user) return null;
 
