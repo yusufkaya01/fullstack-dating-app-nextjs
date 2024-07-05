@@ -37,7 +37,7 @@ const MessageTable = ({ messages }) => {
   const handleRowSelect = (key: Key) => {
     const message = messages.find((message) => message.id === key);
     const url = isOutbox
-      ? `/members/${message?.receiverId}`
+      ? `/members/${message?.recipientId}`
       : `/members/${message?.senderId}`;
     router.push(url + "/chat");
   };
