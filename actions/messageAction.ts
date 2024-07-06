@@ -52,10 +52,12 @@ export const getMessageThread = async (recipientId: string) => {
           {
             senderId: user.id,
             receiverId: recipientId,
+            senderDeleted: false,
           },
           {
             senderId: recipientId,
             receiverId: user.id,
+            recipientDeleted: false,
           },
         ],
       },
@@ -140,12 +142,15 @@ export async function getMessagesByContainer(container: string) {
     const user = await getUser();
     if (!user) return;
 
-    const selector = container === "inbox" ? "receiverId" : "senderId";
+    const conditions = {
+      [container === "outbox" ? "senderId" : "receiverId"]: user.id,
+      ...(container === "outbox"
+        ? { senderDeleted: false }
+        : { recipientDeleted: false }),
+    };
 
     const messages = await prisma.message.findMany({
-      where: {
-        [selector]: user.id,
-      },
+      where: conditions,
       orderBy: {
         createdAt: "desc",
       },
@@ -205,5 +210,52 @@ export async function getMessagesByContainer(container: string) {
     });
   } catch (err) {
     console.error(err);
+  }
+}
+
+export async function deleteMessage(messageId: string, isOutbox: boolean) {
+  const selector = isOutbox ? "senderDeleted" : "recipientDeleted";
+
+  try {
+    const user = await getUser();
+
+    if (!user) return;
+
+    await prisma.message.update({
+      where: { id: messageId },
+      data: {
+        [selector]: true,
+      },
+    });
+
+    const messagesToDelete = await prisma.message.findMany({
+      where: {
+        OR: [
+          {
+            senderId: user.id,
+            senderDeleted: true,
+            recipientDeleted: true,
+          },
+          {
+            receiverId: user.id,
+            senderDeleted: true,
+            recipientDeleted: true,
+          },
+        ],
+      },
+    });
+
+    if (messagesToDelete.length > 0) {
+      await prisma.message.deleteMany({
+        where: {
+          OR: messagesToDelete.map((m) => ({ id: m.id })),
+        },
+      });
+    }
+
+    revalidatePath(`/messages?container=${isOutbox ? "outbox" : "inbox"}`);
+  } catch (error) {
+    console.log(error);
+    throw error;
   }
 }

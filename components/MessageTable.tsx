@@ -1,5 +1,7 @@
 "use client";
 
+import { deleteMessage } from "@/actions/messageAction";
+import { truncateMessage } from "@/utils/truncateMessageStr";
 import {
   Avatar,
   Button,
@@ -12,14 +14,23 @@ import {
   TableRow,
   getKeyValue,
 } from "@nextui-org/react";
+import { Message } from "@prisma/client";
 import clsx from "clsx";
 import { Archive } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Key, useCallback } from "react";
+import { Key, useCallback, useState } from "react";
+
+// type Props = {
+//   messages: Message[];
+// };
 
 const MessageTable = ({ messages }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [deleting, setDeleting] = useState({
+    id: "",
+    loading: false,
+  });
 
   const isOutbox = searchParams.get("container") === "outbox";
 
@@ -42,6 +53,15 @@ const MessageTable = ({ messages }) => {
     },
   ];
 
+  const handleDeleteMessage = useCallback(
+    async (message: Message) => {
+      setDeleting({ id: message.id, loading: true });
+      await deleteMessage(message.id, isOutbox);
+      setDeleting({ id: "", loading: false });
+    },
+    [isOutbox],
+  );
+
   // custom columns:
 
   const renderCell = useCallback(
@@ -52,20 +72,25 @@ const MessageTable = ({ messages }) => {
         case "recipientOrSender":
 
         case "text":
-          return <div className="truncate">{cellValue}</div>;
+          return <div>{truncateMessage(cellValue, 50)}</div>;
         case "createdAt":
           return <div>{cellValue}</div>;
         default:
           return (
             <>
-              <Button isIconOnly variant="light">
+              <Button
+                isIconOnly
+                variant="light"
+                onClick={() => handleDeleteMessage(message)}
+                isLoading={deleting.id === message.id && deleting.loading}
+              >
                 <Archive size={24} className="text-danger" />
               </Button>
             </>
           );
       }
     },
-    [isOutbox, messages],
+    [deleting.id, deleting.loading, handleDeleteMessage],
   );
 
   const handleRowSelect = (key: Key) => {
@@ -129,7 +154,7 @@ const MessageTable = ({ messages }) => {
                     ) : (
                       <div
                         className={clsx("text-gray-400/90", {
-                          "text-gray-200 font-semibold":
+                          "text-white font-semibold":
                             !message.dateSeen && !isOutbox,
                         })}
                       >
