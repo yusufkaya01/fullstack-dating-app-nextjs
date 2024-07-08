@@ -15,7 +15,7 @@ const MessageList = ({
   receiverName,
   chatId,
 }) => {
-  const [messages, setMessages] = useState(chats || []);
+  const [messages, setMessages] = useState(chats);
 
   const handleNewMessage = useCallback((newMessage) => {
     setMessages((prevState) => {
