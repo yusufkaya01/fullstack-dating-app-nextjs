@@ -1,5 +1,6 @@
 "use server";
 import prisma from "@/utils/db";
+import { createChatId, pusherServer } from "@/utils/pusher";
 import { getUser } from "@/utils/user";
 import { messageSchema } from "@/utils/zodschema";
 import { revalidatePath } from "next/cache";
@@ -31,7 +32,60 @@ export const createMessage = async (
         receiverId: recipientId,
         text: data.text,
       },
+      select: {
+        id: true,
+        text: true,
+        createdAt: true,
+        dateSeen: true,
+        senderId: true,
+        receiverId: true,
+        photo: true,
+
+        sender: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            image: true,
+          },
+        },
+        recipient: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            image: true,
+          },
+        },
+      },
     });
+    await pusherServer.trigger(
+      createChatId(user.id, recipientId),
+      "message:new",
+      {
+        message: {
+          id: newMessage.id,
+          text: newMessage.text,
+          createdAt: newMessage.createdAt,
+          dateSeen: newMessage.dateSeen,
+          senderId: newMessage.senderId,
+          receiverId: newMessage.receiverId,
+          photo: newMessage.photo,
+          sender: {
+            id: newMessage.sender.id,
+            firstName: newMessage.sender.firstName,
+            lastName: newMessage.sender.lastName,
+            image: newMessage.sender.image,
+          },
+          recipient: {
+            id: newMessage.recipient.id,
+            firstName: newMessage.recipient.firstName,
+            lastName: newMessage.recipient.lastName,
+            image: newMessage.recipient.image,
+          },
+        },
+      },
+    );
     revalidatePath(`/members/${recipientId}/chat`);
   } catch (err: any) {
     console.error(err);

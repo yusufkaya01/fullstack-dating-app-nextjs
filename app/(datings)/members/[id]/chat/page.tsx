@@ -1,8 +1,10 @@
 import { getMessageThread } from "@/actions/messageAction";
 import MessageBox from "@/components/MessageBox";
 import MessageForm from "@/components/MessageForm";
+import MessageList from "@/components/MessageList";
 import { loadToxicityModel } from "@/utils/loadToxicityMode";
 import { getMember } from "@/utils/members";
+import { createChatId } from "@/utils/pusher";
 import { getUser } from "@/utils/user";
 import {
   Card,
@@ -16,6 +18,8 @@ const page = async ({ params }: { params: { id: string } }) => {
   const chats = await getMessageThread(params.id);
   const user = await getUser();
 
+  if (!user) return;
+
   console.log(chats);
   if (!chats) return;
 
@@ -26,30 +30,19 @@ const page = async ({ params }: { params: { id: string } }) => {
   const receiverObj = await getMember(params.id);
   const receiverName = receiverObj?.firstName;
 
+  const chatId = createChatId(user.id, params.id);
+
   return (
     <>
-      <div className="glass light-blue-mesh h-[100vh] flex flex-col">
-        <CardHeader className="text-3xl font-bold">Chat</CardHeader>
-        <Divider />
-        <CardBody className="flex-1 overflow-y-scroll ">
-          {chats.length === 0
-            ? "No messages to display"
-            : chats.map((chat) => (
-                <MessageBox
-                  key={chat.id}
-                  message={chat}
-                  currentUserId={user.id}
-                  senderImg={senderImage}
-                  receiverImg={receiverImage}
-                  senderName={senderName}
-                  receiverName={receiverName}
-                />
-              ))}
-        </CardBody>
-        <CardFooter className="glass ash-mesh px-8 py-4">
-          <MessageForm />
-        </CardFooter>
-      </div>
+      <MessageList
+        chats={chats}
+        currentUserId={user.id}
+        senderImage={senderImage}
+        receiverImage={receiverImage}
+        senderName={senderName}
+        receiverName={receiverName}
+        chatId={chatId}
+      />
     </>
   );
 };
