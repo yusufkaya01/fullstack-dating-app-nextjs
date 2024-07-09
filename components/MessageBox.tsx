@@ -44,7 +44,16 @@ const MessageBox = ({
       >
         {message.dateSeen && message.receiverId !== currentUserId ? (
           <span className="text-xs text-gray-100/70 text-italic">
-            (Read {new Date(message.dateSeen).toLocaleString()})
+            (Read{" "}
+            {new Date(message.dateSeen).toLocaleString("en-us", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+              hour: "numeric",
+              minute: "numeric",
+              second: "numeric",
+            })}
+            )
           </span>
         ) : (
           <div></div>

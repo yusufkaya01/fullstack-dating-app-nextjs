@@ -52,7 +52,7 @@ export const NudeProvider = ({ children }: PropsWithChildren<{}>) => {
 
           const isFine = predictions.some(
             (prediction) =>
-              prediction.className === "fine" && prediction.probability > 0.9,
+              prediction.className === "fine" && prediction.probability > 0.5,
           );
 
           setIsFine(isFine);

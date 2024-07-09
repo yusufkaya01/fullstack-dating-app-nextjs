@@ -151,14 +151,32 @@ export const getMessageThread = async (recipientId: string) => {
     });
 
     if (messages.length > 0) {
+      // for the first message in the thread, update the dateSeen to the current time
+
+      const readMessageIds = messages
+        .filter(
+          (m) =>
+            m.dateSeen === null &&
+            m.senderId === recipientId &&
+            m.receiverId === user.id,
+        )
+        .map((m) => m.id);
+
       await prisma.message.updateMany({
         where: {
-          senderId: recipientId,
-          receiverId: user.id,
-          dateSeen: null,
+          id: {
+            in: readMessageIds,
+          },
         },
+
         data: { dateSeen: new Date() },
       });
+
+      await pusherServer.trigger(
+        createChatId(recipientId, user.id),
+        "messages:read",
+        readMessageIds,
+      );
     }
 
     const mapMessages = messages.map((message) => {

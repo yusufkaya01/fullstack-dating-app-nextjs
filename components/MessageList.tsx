@@ -23,14 +23,28 @@ const MessageList = ({
     });
   }, []);
 
+  const handleReadMessage = useCallback((messageIds: string[]) => {
+    setMessages((prevState) => {
+      return prevState.map((msg) => {
+        if (messageIds.includes(msg.id)) {
+          return { ...msg, dateSeen: new Date() };
+        }
+        return msg;
+      });
+    });
+    console.log(messageIds);
+  }, []);
+
   useEffect(() => {
     const channel = pusherClient.subscribe(chatId);
     channel.bind("message:new", handleNewMessage);
+    channel.bind("messages:read", handleReadMessage);
     return () => {
       channel.unsubscribe();
       channel.unbind("message:new", handleNewMessage);
+      channel.unbind("messages:read", handleReadMessage);
     };
-  }, [chatId, handleNewMessage]);
+  }, [chatId, handleNewMessage, handleReadMessage]);
 
   useEffect(() => {
     console.log(messages); // Add this line to check messages in the console
