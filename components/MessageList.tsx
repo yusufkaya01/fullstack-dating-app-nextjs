@@ -32,6 +32,10 @@ const MessageList = ({
     };
   }, [chatId, handleNewMessage]);
 
+  useEffect(() => {
+    console.log(messages); // Add this line to check messages in the console
+  }, [messages]);
+
   return (
     <div className="glass light-blue-mesh h-[100vh] flex flex-col">
       <CardHeader className="text-3xl font-bold">Chat</CardHeader>
@@ -39,9 +43,9 @@ const MessageList = ({
       <CardBody className="flex-1 overflow-y-scroll ">
         {messages.length === 0
           ? "No messages to display"
-          : messages.map((msg) => (
+          : messages.map((msg, index) => (
               <MessageBox
-                key={msg.id}
+                key={msg.id || index}
                 message={msg}
                 currentUserId={currentUserId}
                 senderImg={senderImage}

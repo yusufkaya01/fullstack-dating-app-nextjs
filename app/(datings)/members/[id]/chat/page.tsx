@@ -5,6 +5,7 @@ import MessageList from "@/components/MessageList";
 import { loadToxicityModel } from "@/utils/loadToxicityMode";
 import { getMember } from "@/utils/members";
 import { createChatId } from "@/utils/pusher";
+import { getAllMembers } from "@/utils/recommendation";
 import { getUser } from "@/utils/user";
 import {
   Card,
