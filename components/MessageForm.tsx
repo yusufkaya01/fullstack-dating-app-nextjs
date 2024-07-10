@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 
 import { MessageSchema, messageSchema } from "@/utils/zodschema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { createMessage } from "@/actions/messageAction";
 import { useToxicity } from "@/context/ToxicityContext";
 import {
@@ -22,17 +22,17 @@ import ImageUploadButton from "./ImageUploadButton";
 import { CloudinaryUploadWidgetResults } from "next-cloudinary";
 import { addMessageImage } from "@/actions/uploadImageAction";
 import { useNude } from "@/context/NudeContext";
+import { pusherClient } from "@/utils/pusher";
 
 const MessageForm = () => {
   const params = useParams<{ id: string }>();
   const [loading, setLoading] = useState(false);
-  const { handleToxicity, isToxic } = useToxicity();
   const [imageUrl, setImageUrl] = useState<string | null>(null); // State to store the uploaded image URL
   const { handleNude, isFine } = useNude();
+  const router = useRouter();
 
   const [sendImage, setSendImage] = useState(false);
 
-  console.log(isToxic);
   console.log(isFine);
 
   const {
@@ -83,25 +83,6 @@ const MessageForm = () => {
 
   return (
     <>
-      {isToxic && (
-        <div
-          className="
-      bg-red-500
-      text-white
-      rounded-md
-      p-2
-      absolute
-      top-[20%]
-      left-0
-      w-full
-      text-center
-      z-50
-    "
-        >
-          Message is toxic and will not be sent
-        </div>
-      )}
-
       {!isFine && sendImage && (
         <div
           className="

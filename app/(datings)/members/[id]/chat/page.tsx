@@ -21,7 +21,6 @@ const page = async ({ params }: { params: { id: string } }) => {
 
   if (!user) return;
 
-  console.log(chats);
   if (!chats) return;
 
   const senderImage = user?.image;
