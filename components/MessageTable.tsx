@@ -54,7 +54,7 @@ const MessageTable = ({ messages }) => {
   ];
 
   const handleDeleteMessage = useCallback(
-    async (message: Message) => {
+    async (message) => {
       setDeleting({ id: message.id, loading: true });
       await deleteMessage(message.id, isOutbox);
       setDeleting({ id: "", loading: false });
@@ -62,42 +62,38 @@ const MessageTable = ({ messages }) => {
     [isOutbox],
   );
 
-  // custom columns:
-
   const renderCell = useCallback(
     (message, columnKey) => {
       const cellValue = message[columnKey];
-      console.log(cellValue);
       switch (columnKey) {
         case "recipientOrSender":
-
         case "text":
           return <div>{truncateMessage(cellValue, 50)}</div>;
         case "createdAt":
           return <div>{cellValue}</div>;
         default:
           return (
-            <>
-              <Button
-                isIconOnly
-                variant="light"
-                onClick={() => handleDeleteMessage(message)}
-                isLoading={deleting.id === message.id && deleting.loading}
-              >
-                <Archive size={24} className="text-danger" />
-              </Button>
-            </>
+            <Button
+              isIconOnly
+              variant="light"
+              onClick={() => handleDeleteMessage(message)}
+              isLoading={deleting.id === message.id && deleting.loading}
+            >
+              <Archive size={24} className="text-danger" />
+            </Button>
           );
       }
     },
     [deleting.id, deleting.loading, handleDeleteMessage],
   );
 
-  const handleRowSelect = (key: Key) => {
+  const handleRowSelect = (key) => {
     const message = messages.find((message) => message.id === key);
+    if (!message) return;
+
     const url = isOutbox
-      ? `/members/${message?.recipientId}`
-      : `/members/${message?.senderId}`;
+      ? `/members/${message.recipientId}`
+      : `/members/${message.senderId}`;
     router.push(url + "/chat");
   };
 
@@ -123,6 +119,8 @@ const MessageTable = ({ messages }) => {
           emptyContent="No messages for this container"
         >
           {(message) => {
+            if (!message) return null; // Handle null messages
+
             return (
               <TableRow key={message.id} className="cursor-pointer">
                 {(columnKey) => (
@@ -130,25 +128,13 @@ const MessageTable = ({ messages }) => {
                     {columnKey === "recipientOrSender" ? (
                       isOutbox ? (
                         <div className="flex items-center gap-2 cursor-pointer">
-                          <Avatar
-                            src={
-                              isOutbox
-                                ? message.recipient.image
-                                : message.sender.image
-                            }
-                          />
-                          <span>{message.recipient.firstName}</span>
+                          <Avatar src={message.recipient?.image} />
+                          <span>{message.recipient?.firstName}</span>
                         </div>
                       ) : (
                         <div className="flex items-center gap-2 cursor-pointer">
-                          <Avatar
-                            src={
-                              isOutbox
-                                ? message.recipient.image
-                                : message.sender.image
-                            }
-                          />
-                          <span>{message.sender.firstName}</span>
+                          <Avatar src={message.sender?.image} />
+                          <span>{message.sender?.firstName}</span>
                         </div>
                       )
                     ) : (
@@ -158,7 +144,6 @@ const MessageTable = ({ messages }) => {
                             !message.dateSeen && !isOutbox,
                         })}
                       >
-                        {console.log(columnKey)}
                         {renderCell(message, columnKey)}
                       </div>
                     )}

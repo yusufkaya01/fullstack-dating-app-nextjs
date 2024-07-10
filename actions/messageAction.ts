@@ -228,6 +228,9 @@ export async function getMessagesByContainer(container: string) {
         : { recipientDeleted: false }),
     };
 
+    console.log(`Fetching messages for ${container}`);
+    console.log(`Conditions:`, conditions);
+
     const messages = await prisma.message.findMany({
       where: conditions,
       orderBy: {
@@ -240,6 +243,7 @@ export async function getMessagesByContainer(container: string) {
         dateSeen: true,
         senderId: true,
         receiverId: true,
+        photo: true,
 
         sender: {
           select: {
@@ -247,6 +251,7 @@ export async function getMessagesByContainer(container: string) {
             firstName: true,
             lastName: true,
             image: true,
+            userId: true,
           },
         },
         recipient: {
@@ -255,38 +260,53 @@ export async function getMessagesByContainer(container: string) {
             firstName: true,
             lastName: true,
             image: true,
+            userId: true,
           },
         },
       },
     });
-    return messages.map((message) => {
-      return {
-        id: message.id,
-        text: message.text,
-        createdAt: new Date(message.createdAt).toLocaleString("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-          hour: "numeric",
-          minute: "numeric",
-        }),
-        dateSeen: message.dateSeen,
-        senderId: message.senderId,
-        recipientId: message.receiverId,
-        sender: {
-          id: message.sender.id,
-          firstName: message.sender.firstName,
-          lastName: message.sender.lastName,
-          image: message.sender.image,
-        },
-        recipient: {
-          id: message.recipient.id,
-          firstName: message.recipient.firstName,
-          lastName: message.recipient.lastName,
-          image: message.recipient.image,
-        },
-      };
-    });
+
+    console.log(`Fetched ${messages.length} messages`);
+
+    return messages
+      .map((message) => {
+        // Check for null sender or recipient
+        if (!message.sender || !message.recipient) {
+          console.error("Missing sender or recipient for message:", message);
+          return null; // or handle accordingly
+        }
+
+        return {
+          id: message.id,
+          text: message.text,
+          createdAt: new Date(message.createdAt).toLocaleString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+          }),
+          photo: message.photo,
+          dateSeen: message.dateSeen,
+          senderId: message.senderId,
+          recipientId: message.receiverId,
+          sender: {
+            id: message.sender.id,
+            firstName: message.sender.firstName,
+            lastName: message.sender.lastName,
+            image: message.sender.image,
+            userId: message.sender.userId,
+          },
+          recipient: {
+            id: message.recipient.id,
+            firstName: message.recipient.firstName,
+            lastName: message.recipient.lastName,
+            image: message.recipient.image,
+            userId: message.recipient.userId,
+          },
+        };
+      })
+      .filter((message) => message !== null); // Remove null messages
   } catch (err) {
     console.error(err);
   }

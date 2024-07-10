@@ -41,7 +41,6 @@ const MessageSidebar = () => {
           <Icon size={24} />
           <div className="flex justify-between flex-grow">
             <span>{label}</span>
-            {chip && <Chip>{5}</Chip>}
           </div>
         </div>
       ))}
