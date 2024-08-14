@@ -6,6 +6,8 @@ import { notFound } from "next/navigation";
 const page = async ({ params }: { params: { id: string } }) => {
   const member = await getMember(params.id);
 
+  console.log(member);
+
   if (!member) return notFound();
 
   return (

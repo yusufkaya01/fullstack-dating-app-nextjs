@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Button, Card, CardBody, CardHeader, Input } from "@nextui-org/react";
 import { Lock } from "lucide-react";
 import Link from "next/link";
@@ -10,6 +10,8 @@ import { RegisterSchema, registerSchema } from "@/utils/zodschema";
 import { useFormState, useFormStatus } from "react-dom";
 import { registerUser } from "@/actions/auth";
 import SubmitBtn from "./SubmitBtn";
+import { EyeFilledIcon } from "./EyeFilledIcon";
+import { EyeSlashFilledIcon } from "./EyeSlashFilledIcon";
 
 const initial = {
   messsage: null,
@@ -19,6 +21,9 @@ const initial = {
 
 export default function Register() {
   const [formState, action] = useFormState(registerUser, initial);
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggleVisibility = () => setIsVisible(!isVisible);
 
   const {
     register,
@@ -74,11 +79,24 @@ export default function Register() {
               errorMessage={errors.email?.message}
             />
             <Input
-              type="password"
               label="Password"
               isInvalid={errors.password as never as boolean}
               errorMessage={errors.password?.message}
               {...register("password")}
+              endContent={
+                <button
+                  className="focus:outline-none"
+                  type="button"
+                  onClick={toggleVisibility}
+                >
+                  {isVisible ? (
+                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  ) : (
+                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  )}
+                </button>
+              }
+              type={isVisible ? "text" : "password"}
             />
 
             {formState?.message && (

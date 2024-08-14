@@ -1,0 +1,21 @@
+services:
+  nextjs:
+    build: .
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+  nginx:
+    image: my-nginx
+
+    ports:
+      - "80:80"
+    links:
+      - nextjs
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
