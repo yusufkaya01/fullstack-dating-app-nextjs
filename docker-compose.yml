@@ -7,7 +7,7 @@ services:
       - app-network
 
   nginx:
-    image: my-nginx
+    image: nginx:stable-perl
 
     ports:
       - "80:80"
